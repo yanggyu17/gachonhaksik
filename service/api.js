@@ -2,11 +2,19 @@ var https = require('https');
 var urlencode = require('urlencode');
 var bodyParser = require('body-parser');
 var express = require('express');
-//var router = express.Router();
+var router = express.Router();
+var mysql = require('mysql');
+var code = require('../code/code');
 var date = require('date-utils');
 var app = express();
 
-var meals = { };
+var client = mysql.createConnection({
+  host     : 'project.ckbhix5bi49p.ap-northeast-2.rds.amazonaws.com',
+  user     : 'project',
+  password : 'gachon6543210',
+  database : 'project'
+});
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -38,33 +46,115 @@ var req = https.get(options, function(res){
 		resData += chunk;
 	});
 	res.on('end',function(){
-
+		console.log('/api');
 		//json형식으로 파싱
 		resData = JSON.parse(resData);	
+
+var sql_update_vita = 'UPDATE vita SET code=?, name=?, menu=?, date=?';
+var sql_update_areum = 'UPDATE areum SET code=?, name=?, menu=?, date=?';
+var sql_update_chang = 'UPDATE chang SET code=?, name=?, menu=?, date=?';
+var sql_set_vita = 'INSERT INTO vita (code, name, menu, date) VALUES (?, ?, ?, ?)';
+var sql_set_areum = 'INSERT INTO areum (code, name, menu, date) VALUES (?, ?, ?, ?)';
+var sql_set_chang = 'INSERT INTO chang (code, name, menu, date) VALUES (?, ?, ?, ?)';
+
+client.query(sql_set_vita, [code.key_vita, resData.stores[0].name, '메뉴가 없습니다.', d], function(err, data){
+	if(err){
+		console.log(err);
+	}
+});
+client.query(sql_set_areum, [code.key_vita, resData.stores[3].name, '메뉴가 없습니다.', d], function(err, data){
+	if(err){
+		console.log(err);
+	}
+});
+client.query(sql_set_chang, [code.key_vita, resData.stores[1].name, '메뉴가 없습니다.', d], function(err, data){
+	if(err){
+		console.log(err);
+	}
+});
 		
-		//meals.vita = resData.stores[0];
-		//meals.areum = resData.stores[1];
-		//meals.chang = resData.stores[3];
-		
-		
-		var vita = resData.stores[0].name + '\n';
-		vita += resData.stores[0].menus;
-		//console.log(vita);
-		meals.vita = vita;
-		
-		//console.log(resData.stores[0]);
-		//console.log(resData.stores[1]);
-		//console.log(resData.stores[3]);
-		//console.log(res.headers);
+if(resData.stores[0].menu_description != null){
+
+	//비전타워 학식없음
+	client.query(sql_update_vita, [code.key_vita, resData.stores[0].name, '메뉴가 없습니다.', d], function(err, data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM vita WHERE code=?',[code.key_vita],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+	
+	//아름관 학식없음
+	client.query(sql_update_areum, [code.key_areum, resData.stores[3].name, '메뉴가 없습니다.', d], function(err, data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM areum WHERE code=?',[code.key_areum],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+	
+	//창조관 학식없음
+	client.query(sql_update_chang, [code.key_chang, resData.stores[1].name, '메뉴가 없습니다.', d], function(err, data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM chang WHERE code=?',[code.key_chang],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+} else {
+	//비전타워 학식
+	client.query(sql_update_vita, [code.key_vita, resData.stores[0].name, vita, d], function(err,data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM vita WHERE code=?',[code.key_vita],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+	//아름관 학식
+	client.query(sql_update_areum, [code.key_areum, resData.stores[3].name, areum, d], function(err,data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM areum WHERE code=?',[code.key_areum],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+	//창조관 학식
+	client.query(sql_update_chang, [code.key_chang, resData.stores[1].name, chang, d], function(err,data){
+		if(err){
+    		console.log(err);
+    	} else {
+        	client.query('SELECT menu FROM chang WHERE code=?',[code.key_chang],function(err,row){
+        		console.log("확인");
+            	console.log(row);
+        	});
+    	}
+	});
+}// if else
+
 		
 	});
 });
 
-req.end()
+
 
 //에러 처리
 req.on('error',function(err){
 	console.log('err: '+ err.message);
 });
 
-module.exports = meals;
+module.exports = router;

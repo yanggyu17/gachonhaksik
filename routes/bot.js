@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 var message = require('../service/message');
 const Bot = require('../service/BotService');
+var api = require('../service/api');
 
 const checkUserKey = (req, res, next) => {
 	if(req.body.user_key != undefined){
