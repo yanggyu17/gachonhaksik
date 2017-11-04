@@ -60,6 +60,7 @@ Bot.choseMenu = (req, content, callback) => {
 			break;
 		case message.buttons[5]: //무당이 시간표
 			callback(null, message.ButtonType('무당이 시간표','링크를 클릭하면 시간표가 보입니다.','https://s3.ap-northeast-2.amazonaws.com/yanggyu/mudang.jpeg'));
+			break;
 		default:
 			callback(null, message.baseType('올바른 입력값이 아닙니다.'));
 			break;
