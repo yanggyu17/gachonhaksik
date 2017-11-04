@@ -57,26 +57,28 @@ var sql_set_vita = 'INSERT INTO vita (code, name, menu, date) VALUES (?, ?, ?, ?
 var sql_set_areum = 'INSERT INTO areum (code, name, menu, date) VALUES (?, ?, ?, ?)';
 var sql_set_chang = 'INSERT INTO chang (code, name, menu, date) VALUES (?, ?, ?, ?)';
 
-client.query(sql_set_vita, [code.key_vita, resData.stores[0].name, '메뉴가 없습니다.', d], function(err, data){
-	if(err){
-		console.log(err);
-	}
-});
-client.query(sql_set_areum, [code.key_vita, resData.stores[3].name, '메뉴가 없습니다.', d], function(err, data){
-	if(err){
-		console.log(err);
-	}
-});
-client.query(sql_set_chang, [code.key_vita, resData.stores[1].name, '메뉴가 없습니다.', d], function(err, data){
-	if(err){
-		console.log(err);
-	}
-});
+
+	client.query(sql_set_vita, [code.key_vita, resData.stores[0].name, 'na', d], function(err, data){
+		if(err){
+			console.log(err);
+		}
+	});
+	client.query(sql_set_areum, [code.key_areum, resData.stores[3].name, 'na', d], function(err, data){
+		if(err){
+			console.log(err);
+		}
+	});
+	client.query(sql_set_chang, [code.key_chang, resData.stores[1].name, 'na', d], function(err, data){
+		if(err){
+			console.log(err);
+		}
+	});
+
 		
 if(resData.stores[0].menu_description != null){
 
 	//비전타워 학식없음
-	client.query(sql_update_vita, [code.key_vita, resData.stores[0].name, '메뉴가 없습니다.', d], function(err, data){
+	client.query(sql_update_vita, [code.key_vita, resData.stores[0].name, '주말에는 운영을 하지 않습니다.', d], function(err, data){
 		if(err){
     		console.log(err);
     	} else {
@@ -88,7 +90,7 @@ if(resData.stores[0].menu_description != null){
 	});
 	
 	//아름관 학식없음
-	client.query(sql_update_areum, [code.key_areum, resData.stores[3].name, '메뉴가 없습니다.', d], function(err, data){
+	client.query(sql_update_areum, [code.key_areum, resData.stores[3].name, '주말에는 운영을 하지 않습니다.', d], function(err, data){
 		if(err){
     		console.log(err);
     	} else {
@@ -100,7 +102,7 @@ if(resData.stores[0].menu_description != null){
 	});
 	
 	//창조관 학식없음
-	client.query(sql_update_chang, [code.key_chang, resData.stores[1].name, '메뉴가 없습니다.', d], function(err, data){
+	client.query(sql_update_chang, [code.key_chang, resData.stores[1].name, '주말에는 운영을 하지 않습니다.', d], function(err, data){
 		if(err){
     		console.log(err);
     	} else {
