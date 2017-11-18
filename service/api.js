@@ -113,34 +113,51 @@ if(resData.stores[0].menu_description != null){
     	}
 	});
 } else {
+	
 	//비전타워 학식
+	var vita = resData.stores[0].name + ' (' + d +')' +'\n\n';
+                vita += resData.stores[0].menus[1].name + '\n';
+                vita += resData.stores[0].menus[1].description + '\n\n';
+                vita += resData.stores[0].menus[2].name + '\n';
+                vita += resData.stores[0].menus[2].description;
+
 	client.query(sql_update_vita, [code.key_vita, resData.stores[0].name, vita, d], function(err,data){
 		if(err){
     		console.log(err);
     	} else {
-        	client.query('SELECT menu FROM vita WHERE code=?',[code.key_vita],function(err,row){
+        	client.query('SELECT menu FROM vita WHERE code=? limit 1',[code.key_vita],function(err,row){
         		console.log("확인");
             	console.log(row);
         	});
     	}
 	});
 	//아름관 학식
+	var areum = resData.stores[3].name + ' (' + d +')' +'\n\n';
+                areum += resData.stores[3].menus[1].name + '\n';
+                areum += resData.stores[3].menus[1].description + '\n\n';
+                
+
 	client.query(sql_update_areum, [code.key_areum, resData.stores[3].name, areum, d], function(err,data){
 		if(err){
     		console.log(err);
     	} else {
-        	client.query('SELECT menu FROM areum WHERE code=?',[code.key_areum],function(err,row){
+        	client.query('SELECT menu FROM areum WHERE code=? limit 1',[code.key_areum],function(err,row){
         		console.log("확인");
             	console.log(row);
         	});
     	}
 	});
 	//창조관 학식
+	var chang = resData.stores[1].name + ' (' + d +')' +'\n\n';
+                chang += resData.stores[1].menus[1].name + '\n';
+                chang += resData.stores[1].menus[1].description + '\n\n';
+                
+
 	client.query(sql_update_chang, [code.key_chang, resData.stores[1].name, chang, d], function(err,data){
 		if(err){
     		console.log(err);
     	} else {
-        	client.query('SELECT menu FROM chang WHERE code=?',[code.key_chang],function(err,row){
+        	client.query('SELECT menu FROM chang WHERE code=? limit 1',[code.key_chang],function(err,row){
         		console.log("확인");
             	console.log(row);
         	});
